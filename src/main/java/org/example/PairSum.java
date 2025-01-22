@@ -1,43 +1,35 @@
 package org.example;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-public class PairSum {
-    public static List<int[]> findPairs(int[] nums, int target) {
-        Set<Integer> seen = new HashSet<>();
-        Set<String> uniquePairs = new HashSet<>();
-        List<int[]> result = new ArrayList<>();
-
-        for (int num : nums) {
-            int complement = target - num;
-            if (seen.contains(complement)) {
-                int lower = Math.min(num, complement);
-                int higher = Math.max(num, complement);
-                String pairKey = lower + "," + higher;
-
-                // Avoid duplicate pairs
-                if (!uniquePairs.contains(pairKey)) {
-                    result.add(new int[]{lower, higher});
-                    uniquePairs.add(pairKey);
-                }
-            }
-            seen.add(num);
-        }
-
-        return result;
-    }
+public class PairSum{
 
     public static void main(String[] args) {
-        int[] array = {2, 4, 3,3,7, 1, 5};
+        int[] numbers = {2, 4, 3, 7, 1, 5};
         int target = 6;
-        List<int[]> pairs = findPairs(array, target);
 
-        System.out.println("Pairs with sum " + target + ":");
-        for (int[] pair : pairs) {
-            System.out.println("(" + pair[0] + ", " + pair[1] + ")");
+        Set<String> result = pairedElement(numbers, target);
+
+        // Print the result
+        result.forEach(pair -> System.out.println(pair));
+    }
+
+
+    public static Set<String> pairedElement(int[] arr, int sum) {
+        Set<String> pairs = new HashSet<>();
+
+        for (int x : arr) {
+            for (int y : arr) {
+                if (x + y == sum) {
+                    String pair1 = "(" + x + "," + y + ")";
+                    String pair2 = "(" + y + "," + x + ")";
+                    // Add the pair only if its reverse is not already present
+                    if (!pairs.contains(pair2)) {
+                        pairs.add(pair1);
+                    }
+                }
+            }
         }
+        return pairs;
     }
 }
